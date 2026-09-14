@@ -1,0 +1,4 @@
+# Pythonin virtuaaliympäristö
+venv/
+ __pycache__/
+*.pyc
