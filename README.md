@@ -49,20 +49,44 @@ graph LR
     class F,G,H cloud;
     class A,B,C,D,E local;
 
-`
-TAULU 1: LENTO (Ylätaso)
-| id (Pääavain) | pvm_aika            | tehtava_tyyppi (Kategoria 1) |
-|---------------|---------------------|------------------------------|
-| 1             | 2026-10-22 14:00:00 | Reittisuunnitelma            |
-| 2             | 2026-10-22 15:30:00 | Kartoituslento               |
+```
 
-TAULU 2: REITTIPISTE (Sidottu Lentoon)
-| id | lento_id (Viittaus) | lat     | lon     | jarjestysnumero |
-|----|---------------------|---------|---------|-----------------|
-| 1  | 1                   | 62.2415 | 25.7209 | 1               |
-| 2  | 1                   | 62.2450 | 25.7300 | 2               |
+#Tietokantarakenteen hahmotelma:
 
-TAULU 3: HAVAINTO (Sidottu Lentoon)
-| id | lento_id (Viittaus) | lat     | lon     | luokka (Kategoria 2)       | luotettavuus |
-|----|---------------------|---------|---------|----------------------------|--------------|
-| 1  | 1                   | 62.2420 | 25.7220 | Lämpöpoikkeama (Sentinel-2)| 0.90         |
+erDiagram
+    LENTO {
+        INTEGER id PK "Pääavain"
+        TEXT pvm_aika "Lennon luontiaika"
+        TEXT tehtava_tyyppi "Kategoria"
+    }
+    
+    REITTIPISTE {
+        INTEGER id PK "Pääavain"
+        INTEGER lento_id FK "Viittaus Lento-tauluun"
+        REAL lat "Leveysaste"
+        REAL lon "Pituusaste"
+        INTEGER jarjestysnumero "Pisteen järjestys"
+    }
+
+    %% UUSI KONENÄKÖKOKONAISUUS
+    KONENAKO_ANALYYSI {
+        INTEGER id PK "Pääavain"
+        INTEGER lento_id FK "Viittaus Lento-tauluun"
+        TEXT satelliitti_lahde "Esim. Sentinel-2"
+        TEXT tekoaly_malli "Esim. GEE SWIR-algoritmi"
+        TEXT pvm_aika "Analyysin suoritusaika"
+    }
+    
+    HAVAINTO {
+        INTEGER id PK "Pääavain"
+        INTEGER analyysi_id FK "Viittaus Konenäkö-analyysiin"
+        REAL lat "Leveysaste"
+        REAL lon "Pituusaste"
+        TEXT luokka "Kohteen luokka"
+        REAL luotettavuus "0.0 - 1.0"
+    }
+
+    %% Relaatiot
+    LENTO ||--o{ REITTIPISTE : "koostuu"
+    LENTO ||--o{ KONENAKO_ANALYYSI : "käynnistää"
+    KONENAKO_ANALYYSI ||--o{ HAVAINTO : "tuottaa"
