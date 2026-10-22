@@ -20,7 +20,7 @@ Järjestelmä koostuu seuraavista osista:
 * Paikkatieto ja analyysi: Folium, Pandas
 * Drooni-integraatio: Pymavlink, SITL
 
-mermaid`
+```mermaid
 graph LR
     %% -- TELEMETRIAN TIETOVIRTA (PAIKALLINEN) --
     subgraph Paikallinen_Telemetria [Maa-asema: Reittidata]
