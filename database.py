@@ -84,6 +84,26 @@ def hae_lennot():
     conn.close()
     return lennot
 
+def tallenna_havainto(lento_id, lat, lon, luokka, luotettavuus):
+    """
+    Tallentaa konenäön (ML) tekemän satelliittikuvahavainnon tietokantaan.
+    Georeferoitu data (lat, lon) yhdistetään aktiiviseen lentoon.
+    """
+    conn = luo_yhteys()
+    cursor = conn.cursor()
+    
+    # Syötetään tekoälyn havainnot havainto-tauluun
+    cursor.execute(
+        "INSERT INTO havainto (lento_id, lat, lon, luokka, luotettavuus) VALUES (?, ?, ?, ?, ?)",
+        (lento_id, lat, lon, luokka, luotettavuus)
+    )
+    
+    havainto_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+    
+    return havainto_id
+
 # Testissä muistutusviesti kun en muista mihin jään
 if __name__ == "__main__":
     alusta_tietokanta()
