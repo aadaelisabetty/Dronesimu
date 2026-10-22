@@ -53,6 +53,19 @@ graph LR
 
 #Tietokantarakenteen hahmotelma:
 
+```mermaid
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "primaryColor": "#f4f9ff",
+    "primaryBorderColor": "#0055ff",
+    "primaryTextColor": "#111111",
+    "lineColor": "#0055ff",
+    "secondaryColor": "#e6f0ff",
+    "tertiaryColor": "#ffffff"
+  }
+}}%%
+
 erDiagram
     LENTO {
         INTEGER id PK "Pääavain"
@@ -90,3 +103,7 @@ erDiagram
     LENTO ||--o{ REITTIPISTE : "koostuu"
     LENTO ||--o{ KONENAKO_ANALYYSI : "käynnistää"
     KONENAKO_ANALYYSI ||--o{ HAVAINTO : "tuottaa"
+
+```
+
+
